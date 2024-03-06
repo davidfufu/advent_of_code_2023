@@ -105,3 +105,4 @@ class Machine:
 
 if __name__ == "__main__":
     machine = Machine(INPUT_TEXT_PATH)
+    # https://aoc-puzzle-solver.streamlit.app/
