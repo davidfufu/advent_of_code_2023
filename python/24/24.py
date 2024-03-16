@@ -30,13 +30,9 @@ class ScratchCards:
         puzzleInput = open(INPUT_TEXT_PATH).read()
         numbersRegex = r"Card\s*(\d*):(.*)\|(.*)"
         cards = re.findall(numbersRegex, puzzleInput)
-        print(type(cards), len(cards))
-        print(cards)
         totalCards = {}
 
         def cardCounter(card: tuple, totalCards):
-            print("Evaluating: ", card)
-
             cardNumber, winNums, myNums = card
 
             if cardNumber not in totalCards:
@@ -54,8 +50,6 @@ class ScratchCards:
 
         for card in cards:
             cardCounter(card, totalCards)
-
-        print(totalCards)
 
         print("Total Amount Of Scratch Cards: ", sum(totalCards.values()))
 
