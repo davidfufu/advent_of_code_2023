@@ -27,7 +27,7 @@ class ScratchCards:
                 points = 2 ** (len(wins) - 1)
                 total += points
 
-        print("Parrt One Points ", total)
+        print("Part One Points ", total)
 
     def cardCounter(self, card: tuple, totalCards):
         cardNumber, winNums, myNums = card
