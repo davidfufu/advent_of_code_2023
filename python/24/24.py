@@ -27,8 +27,8 @@ class ScratchCards:
         print(total)
 
     def partTwo(self):
-        puzzleInput = open(TEST_INPUT_TEXT_PATH).read()
-        numbersRegex = r"Card\s(\d*):(.*)\|(.*)"
+        puzzleInput = open(INPUT_TEXT_PATH).read()
+        numbersRegex = r"Card\s*(\d*):(.*)\|(.*)"
         cards = re.findall(numbersRegex, puzzleInput)
         print(type(cards), len(cards))
         print(cards)
@@ -47,12 +47,17 @@ class ScratchCards:
             overlaps = self.findOverlaps(winNums, myNums)
 
             for i in range(int(cardNumber) + 1, int(cardNumber) + len(overlaps) + 1):
-                cardCounter(cards[i - 1], totalCards)
+                try:
+                    cardCounter(cards[i - 1], totalCards)
+                except IndexError:
+                    continue
 
         for card in cards:
             cardCounter(card, totalCards)
 
         print(totalCards)
+
+        print("Total Amount Of Scratch Cards: ", sum(totalCards.values()))
 
     def findOverlaps(self, winNumStr, myNumStr) -> set:
         return set(myNumStr.strip().split()) & set(winNumStr.strip().split())
