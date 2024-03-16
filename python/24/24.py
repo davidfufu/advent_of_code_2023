@@ -8,50 +8,50 @@ TEST_INPUT_TEXT_PATH = "./24_test_input.txt"
 
 class ScratchCards:
     def __init__(self, filePath):
+        self.setUp()
         # self.partOne()
-        self.partTwo()
+        # self.partTwo()
+        self.partOne()
+
+    def setUp(self):
+        puzzleInput = open(INPUT_TEXT_PATH).read()
+        self.numbersRegex = r"Card\s*(\d*):(.*)\|(.*)"
+        self.cards = re.findall(self.numbersRegex, puzzleInput)
 
     def partOne(self):
-        puzzleInput = open(INPUT_TEXT_PATH).read()
         total = 0
-        numbersRegex = r":(.*)\|(.*)"
 
-        # for card
-        # print(re.findall(numbersRegex, puzzleInput))
-        for winNums, myNums in re.findall(numbersRegex, puzzleInput):
-            wins = set(myNums.strip().split()) & set(winNums.strip().split())
+        for card in self.cards:
+            _, winNums, myNums = card
+            wins = self.findOverlaps(winNums, myNums)
             if wins:
                 points = 2 ** (len(wins) - 1)
                 total += points
 
-        print(total)
+        print("Parrt One Points ", total)
+
+    def cardCounter(self, card: tuple, totalCards):
+        cardNumber, winNums, myNums = card
+
+        if cardNumber not in totalCards:
+            totalCards[cardNumber] = 1
+        else:
+            totalCards[cardNumber] += 1
+
+        overlaps = self.findOverlaps(winNums, myNums)
+
+        for i in range(int(cardNumber) + 1, int(cardNumber) + len(overlaps) + 1):
+            try:
+                self.cardCounter(self.cards[i - 1], totalCards)
+            except IndexError:
+                continue
 
     def partTwo(self):
-        puzzleInput = open(INPUT_TEXT_PATH).read()
-        numbersRegex = r"Card\s*(\d*):(.*)\|(.*)"
-        cards = re.findall(numbersRegex, puzzleInput)
         totalCards = {}
+        for card in self.cards:
+            self.cardCounter(card, totalCards)
 
-        def cardCounter(card: tuple, totalCards):
-            cardNumber, winNums, myNums = card
-
-            if cardNumber not in totalCards:
-                totalCards[cardNumber] = 1
-            else:
-                totalCards[cardNumber] += 1
-
-            overlaps = self.findOverlaps(winNums, myNums)
-
-            for i in range(int(cardNumber) + 1, int(cardNumber) + len(overlaps) + 1):
-                try:
-                    cardCounter(cards[i - 1], totalCards)
-                except IndexError:
-                    continue
-
-        for card in cards:
-            cardCounter(card, totalCards)
-
-        print("Total Amount Of Scratch Cards: ", sum(totalCards.values()))
+        print("Part Two: Total Amount Of Scratch Cards: ", sum(totalCards.values()))
 
     def findOverlaps(self, winNumStr, myNumStr) -> set:
         return set(myNumStr.strip().split()) & set(winNumStr.strip().split())
