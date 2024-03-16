@@ -9,8 +9,8 @@ TEST_INPUT_TEXT_PATH = "./24_test_input.txt"
 class ScratchCards:
     def __init__(self, filePath):
         self.setUp()
-        # self.partTwo()
         self.partOne()
+        self.partTwo()
 
     def setUp(self):
         puzzleInput = open(INPUT_TEXT_PATH).read()
